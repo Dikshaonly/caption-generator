@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+env/
+venv/
+
+# Node/React
+node_modules/
+build/
+dist/
+
+# OS and IDE
+.DS_Store
+*.log
+.vscode/
+
+# Model or image files (if large)
+*.pt
+*.h5
+*.jpg
+*.png
+
