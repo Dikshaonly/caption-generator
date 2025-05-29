@@ -21,3 +21,4 @@ dist/
 *.jpg
 *.png
 
+backend/.env
