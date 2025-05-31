@@ -26,7 +26,7 @@ function App() {
     setError("");
 
     try {
-      const response = await fetch("https://caption-generator-veku.onrender.com/docs", 
+      const response = await fetch("https://caption-generator-veku.onrender.com/vibe", 
        {
         method: "POST",
         body: formData,
