@@ -9,6 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 PORT = int(os.environ.get("PORT", 8000))
 
+
+
 app = FastAPI(title="Vibe Caption API", version="1.0.0")
 app = FastAPI()
 
