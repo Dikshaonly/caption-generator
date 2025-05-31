@@ -26,7 +26,7 @@ function App() {
     setError("");
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/vibe`, 
+      const response = await fetch("https://caption-generator-veku.onrender.com/docs", 
        {
         method: "POST",
         body: formData,
