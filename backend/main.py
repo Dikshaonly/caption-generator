@@ -17,7 +17,7 @@ app = FastAPI()
 # CORS setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://vibesync-5qf0.onrender.com"],  
+    allow_origins=["https://vibesync-ai.netlify.app/"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,6 +38,17 @@ SCENE_CAPTIONS = {
         "Vitamin Sea incoming! ☀️ #Paradise",
         "Where the sky meets the sea ✨ #Horizon"
     ],
+    # Celestial & Night
+    "moon": [
+        "Moonlit magic happening ✨🌙 #Lunar",
+        "Dancing under the moonlight 🌕 #NightVibes",
+        "Moon child energy activated 🌙 #Celestial",
+        "When the moon hits your eye... 🌙✨ #Romantic",
+        "Lunar therapy session in progress 🌕 #Peaceful",
+        "Howling at the moon tonight 🐺🌙 #Wild",
+        "Moonbeams and dreams 🌙💫 #Mystical"
+    ],
+
     "sunset": [
         "Chasing sunsets and dreams 🌅 #GoldenHour",
         "Nature's daily masterpiece 🎨 #Sunset",
@@ -72,6 +83,17 @@ SCENE_CAPTIONS = {
         "Frozen moments, warm hearts 💙 #Snow",
         "Winter magic is real ⛄ #Wonderland",
         "Cold outside, cozy inside 🔥 #WinterVibes"
+    ],
+    # Social & Entertainment
+    "party": [
+        "Party mode: ACTIVATED 🎉 #LetsGo",
+        "Dancing through life one beat at a time 💃 #PartyVibes",
+        "Good times and crazy friends 🎊 #Squad",
+        "Life's a party, dress accordingly ✨ #Celebration",
+        "Turn up the music, turn up the fun! 🎵 #Party",
+        "Making memories on the dance floor 🕺 #GoodTimes",
+        "Party like there's no tomorrow 🎉 #YOLO",
+        "Confetti in my hair, joy in my heart 🎊 #Festive"
     ],
     
     # Urban & Architecture
@@ -210,6 +232,22 @@ COMBO_CAPTIONS = {
         "Inner peace meets outer beauty 🏞️🧘 #Serenity",
         "Still waters, calm soul 💙✨ #Tranquil"
     ],
+    ("happy", "party"): [
+        "Living my best party life! 🎉😄 #PartyHappy",
+        "Good vibes and great friends! 🎊✨ #Celebration"
+    ],
+    ("excited", "party"): [
+        "Energy through the roof tonight! 🎉⚡ #PartyMode",
+        "Can't contain this party excitement! 🕺🎊 #TurnUp"
+    ],
+    ("peaceful", "moon"): [
+        "Moonlight meditation vibes 🌙🧘 #LunarPeace",
+        "Finding serenity under the stars ✨🌕 #Tranquil"
+    ],
+    ("happy", "moon"): [
+        "Moon makes everything magical! 🌙😊 #LunarJoy",
+        "Smiling at the moon, moon smiling back 🌕💫 #MoonChild"
+    ],
     ("excited", "city"): [
         "City energy matching my vibe! 🌃⚡ #UrbanExcitement",
         "Ready to take on the world! 🏙️🚀 #CityVibes"
@@ -255,6 +293,23 @@ def classify_scene(image):
             "cloud": "sky",
             "atmosphere": "sky",
             
+            # Celestial/Night scenes - NEW MOON MAPPINGS
+            "moon": "moon",
+            "lunar": "moon",
+            "night": "moon",
+            "nighttime": "moon",
+            "evening": "moon",
+            "dusk": "moon",
+            "twilight": "moon",
+            "moonlight": "moon",
+            "crescent": "moon",
+            "full moon": "moon",
+            "astronomy": "moon",
+            "celestial": "moon",
+            "starry": "moon",
+            "stars": "moon",
+            "constellation": "moon",
+            
             # Urban
             "city": "city",
             "downtown": "city",
@@ -270,6 +325,29 @@ def classify_scene(image):
             "road": "street",
             "sidewalk": "street",
             "crosswalk": "street",
+            
+            # Social/Entertainment - NEW PARTY MAPPINGS
+            "party": "party",
+            "celebration": "party",
+            "festival": "party",
+            "concert": "party",
+            "nightclub": "party",
+            "club": "party",
+            "dance": "party",
+            "dancing": "party",
+            "disco": "party",
+            "birthday": "party",
+            "wedding": "party",
+            "event": "party",
+            "gathering": "party",
+            "crowd": "party",
+            "people": "party",
+            "confetti": "party",
+            "balloons": "party",
+            "music": "party",
+            "stage": "party",
+            "lights": "party",
+            "entertainment": "party",
             
             # Transportation
             "ship": "ship",
@@ -426,6 +504,7 @@ async def detect_vibe(file: UploadFile = File(...)):
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "message": "Server running with emotion + scene detection!"}
+
 @app.get("/")
 async def root():
     return {
