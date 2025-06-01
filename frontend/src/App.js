@@ -6,6 +6,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [copyStatus, setCopyStatus] = useState('idle');
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -48,14 +49,46 @@ function App() {
 
     setLoading(false);
   };
+const handleCopyCaption = async () => {
+  if (!result?.caption) {
+    alert("No caption to copy!");
+    return;
+  }
 
-  const handleCopyCaption = () => {
-    if (result?.caption) {
-      navigator.clipboard.writeText(result.caption);
-      // You could add a toast notification here
-      alert("Caption copied to clipboard!");
+  setCopyStatus('copying');
+
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(result.caption);
+      setCopyStatus('success');
+    } 
+    else {
+      const textArea = document.createElement('textarea');
+      textArea.value = result.caption;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      if (!successful) {
+        throw new Error('Copy command failed');
+      }
+      setCopyStatus('success');
     }
-  };
+  } catch (error) {
+    console.error('Failed to copy:', error);
+    setCopyStatus('error');
+    alert("Failed to copy caption. Please try selecting and copying manually.");
+  }
+
+  // Reset status after 2 seconds
+  setTimeout(() => setCopyStatus('idle'), 2000);
+};
 
   const handleNewPhoto = () => {
     setFile(null);
@@ -147,9 +180,17 @@ function App() {
             <div className="caption-card">
               <p className="caption-text">{result.caption}</p>
               <div className="caption-actions">
-                <button onClick={handleCopyCaption} className="copy-btn">
-                  📋 Copy Caption
-                </button>
+              <button 
+  onClick={handleCopyCaption} 
+  className="copy-btn"
+  disabled={copyStatus === 'copying'}
+>
+  {copyStatus === 'copying' ? '📋 Copying...' : 
+   copyStatus === 'success' ? '✅ Copied!' : 
+   copyStatus === 'error' ? '❌ Try Again' : 
+   '📋 Copy Caption'}
+</button>
+                
               </div>
             </div>
           </div>
